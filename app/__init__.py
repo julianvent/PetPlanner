@@ -14,6 +14,6 @@ def create_app():
 
     @app.route("/")
     def index():
-        return jsonify("ANFECA", "mierda")
+        return "PetPlanner"
 
     return app
