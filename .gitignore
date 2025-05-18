@@ -9,6 +9,8 @@ env/
 
 .idea/
 .vscode/
+__pycache__/
+*.py[cod]
 
 .DS_Store
 *.swp
