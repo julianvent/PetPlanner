@@ -1,5 +1,3 @@
-import email
-
 from flask import request, jsonify
 
 from app.utils.auth import generate_token
@@ -29,6 +27,9 @@ def create_user():
         return jsonify({"message": password_msg}), 400
 
     try:
+        exist_user = User.query.filter_by(email=email).first()
+        if exist_user:
+            return jsonify({"message": "User already exists"}), 400
 
         new_user = User(
             name=name,
@@ -40,9 +41,9 @@ def create_user():
         db.session.add(new_user)
         db.session.commit()
 
-        return jsonify(new_user.to_json()), 201
+        return new_user.to_json(), 201
     except Exception as e:
-        return jsonify({"message": str(e), "status": "erro"})
+        return jsonify({"message": str(e)}), 500
 
 
 def get_token():
@@ -52,31 +53,34 @@ def get_token():
 
     if not email or not password:
         return jsonify({"message": "No data provided"}), 400
+    try:
+        user = User.query.filter_by(email=email).first()
 
-    user = User.query.filter_by(email=email).first()
+        if not user:
+            return jsonify({"message": "User not found"}), 404
 
-    if not user:
-        return jsonify({"message": "User not found"}), 404
-
-    if check_password_hash(user.password, password):
-        return jsonify({"message": "", "token": generate_token(user)}), 200
-    else:
-        return jsonify({"message": "Wrong password"}), 401
+        if check_password_hash(user.password, password):
+            return jsonify({"message": "Password changed", "token": generate_token(user)}), 200
+        else:
+            return jsonify({"message": "Wrong password"}), 401
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500
 
 def edit_user(current_user):
     data = request.get_json()
+    try:
+        user = User.query.filter_by(email=current_user.email).first()
 
-    user = User.query.filter_by(email=current_user.email).first()
+        if not user:
+            return jsonify({"message": "User not found"}), 404
 
-    if not user:
-        return jsonify({"message": "User not found"}), 404
+        user.name = data.get("name") or user.name
+        # user.role = data.get("role") or user.role
+        db.session.commit()
 
-    user.name = data.get("name") or user.name
-    # user.role = data.get("role") or user.role
-    db.session.commit()
-
-    return user.to_json(), 200
-
+        return user.to_json(), 200
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500
 
 def change_password(current_user):
     data = request.get_json()
@@ -89,10 +93,13 @@ def change_password(current_user):
     if not is_valid_password:
         return jsonify({"message": password_msg}), 400
 
-    current_user.password = generate_password_hash(password)
-    db.session.commit()
+    try:
+        current_user.password = generate_password_hash(password)
+        db.session.commit()
 
-    return jsonify({"message": "Password changed"}), 200
+        return jsonify({"message": "Password changed"}), 200
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500
 
 
 def forgot_password():
