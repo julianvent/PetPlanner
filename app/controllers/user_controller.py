@@ -27,8 +27,8 @@ def create_user():
         return jsonify({"message": password_msg}), 400
 
     try:
-        exist_user = User.query.filter_by(email=email).first()
-        if exist_user:
+        existing_user = User.query.filter_by(email=email).first()
+        if existing_user:
             return jsonify({"message": "User already exists"}), 400
 
         new_user = User(
@@ -41,7 +41,7 @@ def create_user():
         db.session.add(new_user)
         db.session.commit()
 
-        return new_user.to_json(), 201
+        return jsonify({"message": "Successfully created user", "data": new_user.to_json()}), 201
     except Exception as e:
         return jsonify({"message": str(e)}), 500
 
@@ -78,7 +78,7 @@ def edit_user(current_user):
         # user.role = data.get("role") or user.role
         db.session.commit()
 
-        return user.to_json(), 200
+        return jsonify({"message": "user successfully updated", "data":user.to_json()}), 200
     except Exception as e:
         return jsonify({"message": str(e)}), 500
 
