@@ -40,7 +40,7 @@ CREATE TABLE medical_events (
     id INT AUTO_INCREMENT PRIMARY KEY
     , pet_id INT
     , title VARCHAR(255) NOT NULL
-    ,description TEXT
+    , description TEXT
     , date DATE NOT NULL
     , is_completed BOOLEAN
     , recurrence VARCHAR(50)

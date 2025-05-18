@@ -86,7 +86,7 @@ def delete_pet(current_user, pet_id):
         db.session.delete(pet)
         db.session.commit()
 
-        return jsonify({"message": "Pet successfully deleted"})
+        return jsonify({"message": "Pet successfully deleted"}), 200
 
     except Exception as e:
         return jsonify({"message": str(e)}), 400
