@@ -1,5 +1,3 @@
-from tkinter.font import names
-
 from flask import request, jsonify
 from app.models.petplanner import db, Allergy
 
@@ -36,7 +34,7 @@ def get_allergy(current_user):
 
     try:
         allergies = Allergy.query.all()
-        return jsonify({"allergies": [allergy.to_json() for allergy in allergies]}), 200
+        return jsonify({"message": "Successfully retrieved allergies","data": [allergy.to_json() for allergy in allergies]}), 200
     except Exception as e:
         return jsonify({"message": str(e)}), 500
 

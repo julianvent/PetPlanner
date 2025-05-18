@@ -11,8 +11,10 @@ def create_app():
 
     from app.routes.user_route import users
     from app.routes.allergy_route import allergy
+    from app.routes.pet_route import pets
     app.register_blueprint(users, url_prefix="/users")
     app.register_blueprint(allergy, url_prefix="/allergy")
+    app.register_blueprint(pets, url_prefix="/pets")
 
 
     @app.route("/")
