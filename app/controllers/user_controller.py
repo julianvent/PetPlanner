@@ -60,7 +60,7 @@ def get_token():
             return jsonify({"message": "User not found"}), 404
 
         if check_password_hash(user.password, password):
-            return jsonify({"message": "Password changed", "token": generate_token(user)}), 200
+            return jsonify({"message": "Successfully logged", "token": generate_token(user)}), 200
         else:
             return jsonify({"message": "Wrong password"}), 401
     except Exception as e:

@@ -82,7 +82,7 @@ class MedicalEvent(db.Model):
     description = db.Column(db.Text)
     date = db.Column(db.Date, nullable=False)
     is_completed = db.Column(db.Boolean)
-    recurrence = db.Column(db.String(50))
+    recurrence = db.Column(db.Integer)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     notifications = db.relationship("Notification", backref="event", cascade="all, delete-orphan")

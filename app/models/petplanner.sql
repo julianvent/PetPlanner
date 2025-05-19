@@ -43,7 +43,7 @@ CREATE TABLE medical_events (
     , description TEXT
     , date DATE NOT NULL
     , is_completed BOOLEAN
-    , recurrence VARCHAR(50)
+    , recurrence int
     , created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     , FOREIGN KEY (pet_id) REFERENCES pets(id)
 );
