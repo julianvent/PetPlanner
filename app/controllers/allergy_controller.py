@@ -49,7 +49,11 @@ def edit_allergy(current_user, id_allergy):
         if not allergy:
             return jsonify({"message": "Allergy not found"}), 404
 
-        allergy.name = data.get("name") or allergy.name
+        existing_allergy = Allergy.query.filter_by(name=data['name_allergy']).first()
+        if existing_allergy:
+            return jsonify({"message": "Already exists"}), 400
+
+        allergy.name = data.get("name_allergy") or allergy.name
         db.session.commit()
 
         return jsonify({"message": "Successfully edited allergy", "data": allergy.to_json()}), 200
