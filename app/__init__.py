@@ -14,11 +14,13 @@ def create_app():
     from app.routes.pet_route import pets
     from app.routes.medical_event_route import medical_event
     from app.routes.notification_route import notification
+    from app.routes.center_route import center
     app.register_blueprint(users, url_prefix="/users")
-    app.register_blueprint(allergy, url_prefix="/allergy")
+    app.register_blueprint(allergy, url_prefix="/allergies")
     app.register_blueprint(pets, url_prefix="/pets")
-    app.register_blueprint(medical_event, url_prefix="/medical_event")
-    app.register_blueprint(notification, url_prefix="/notification")
+    app.register_blueprint(medical_event, url_prefix="/medical_events")
+    app.register_blueprint(notification, url_prefix="/notifications")
+    app.register_blueprint(center, url_prefix="/centers")
 
     @app.route("/")
     def index():

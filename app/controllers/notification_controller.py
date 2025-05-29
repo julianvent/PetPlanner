@@ -2,7 +2,7 @@ from flask import request, jsonify
 from app.models.petplanner import db, Notification, Pet, MedicalEvent
 
 
-def create_notification(current_user, event_id):
+def create_notification(event_id):
     try:
         medical_event = MedicalEvent.query.filter_by(id=event_id).first()
 

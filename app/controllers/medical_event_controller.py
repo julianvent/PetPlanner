@@ -10,7 +10,7 @@ def create_medical_event(current_user, pet_id):
     description = data.get('description')
     date = data.get('date')
     is_completed = data.get('is_completed')
-    recurrence = data.get('recurrence')
+    recurrence = data.get('recurrence') # 0,1
 
     if not pet_id or not title or not description or not date or recurrence is None or is_completed is None:
         return jsonify({"message": "No data provided"}), 400
