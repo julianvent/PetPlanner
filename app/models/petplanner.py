@@ -72,6 +72,11 @@ class PetAllergy(db.Model):
 
     pet_id = db.Column(db.Integer, db.ForeignKey('pets.id'), primary_key=True)
     allergy_id = db.Column(db.Integer, db.ForeignKey('allergies.id'), primary_key=True)
+    def to_json(self):
+        return {
+            "pet_id": self.pet_id,
+            "allergy_id": self.allergy_id,
+        }
 
 class MedicalEvent(db.Model):
     __tablename__ = 'medical_events'

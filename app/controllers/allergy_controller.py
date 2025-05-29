@@ -99,8 +99,16 @@ def assign_allergy_to_pet(current_user, id_pet, id_allergy):
 
     try:
         pet = Pet.query.filter_by(id=id_pet).first()
+        allergy_exists = PetAllergy.query.filter_by(allergy_id=id_allergy, pet_id=id_pet).first()
+        if allergy_exists:
+            return jsonify({"message": "Already exists"}), 400
+
         if not pet:
             return jsonify({"message": "Pet not found"}), 404
+
+        allergy = Pet.query.filter_by(id=id_allergy).first()
+        if not allergy:
+            return jsonify({"message": "Allergy not found"}), 404
 
         if pet.user_id != current_user.id:
             return jsonify({"message": "Not allowed"}), 403
@@ -132,7 +140,7 @@ def get_pet_allergies(current_user, id_pet):
     except Exception as e:
         return jsonify({"message": str(e)}), 500
 
-def remove_allergy_from_pet(current_user, id_allergy, id_pet):
+def remove_allergy_from_pet(current_user,id_pet, id_allergy):
     if not id_allergy or not id_pet:
         return jsonify({"message": "No data provided"}), 400
 
@@ -144,8 +152,7 @@ def remove_allergy_from_pet(current_user, id_allergy, id_pet):
 
         if pet.user_id != current_user.id:
             return jsonify({"message": "Not allowed"}), 403
-
-        allergy = PetAllergy.query.filter_by(pet_id=pet.id, allergy_id=id_allergy).first()
+        allergy = PetAllergy.query.filter_by(pet_id=id_pet, allergy_id=id_allergy).first()
         if not allergy:
             return jsonify({"message": "Allergy not found"}), 404
 
