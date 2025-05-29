@@ -24,4 +24,4 @@ def edit_allergy_route(current_user, id_allergy):
 @allergy.route('/<int:id_allergy>', methods=['DELETE'])
 @token_required
 def delete_allergy_route(current_user, id_allergy):
-    return delete_allergy(current_user, id_allergy)
+    return delete_allergy(current_user, id_allergy) 
