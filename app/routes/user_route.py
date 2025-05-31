@@ -35,4 +35,3 @@ def update_profile(current_user):
 @token_required
 def change_role(current_user, user_id):
     return assign_role_to_user(current_user, user_id)
-

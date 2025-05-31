@@ -16,14 +16,11 @@ def create_user():
     name = data.get("name")
     role = Role.DEFAULT_ROLE.value
 
-
     if not email or not password or not name or not role:
         return jsonify({"message": "No data provided"}), 400
-
     is_valid_email, email_msg = validate_email(email)
     if not is_valid_email:
         return jsonify({"message": email_msg}), 400
-
     is_valid_password, password_msg = validate_password(password)
     if not is_valid_password:
         return jsonify({"message": password_msg}), 400
@@ -108,7 +105,7 @@ def change_password(current_user):
         return jsonify({"message": password_msg}), 400
 
     try:
-        current_user.password = generate_password_hash(password)
+        User.query.filter_by(email=current_user.email).update({"password": generate_password_hash(password)})
         db.session.commit()
 
         return jsonify({"message": "Password changed"}), 200

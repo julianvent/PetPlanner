@@ -1,0 +1,22 @@
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: PetPlanner
+    volumes:
+      - ./docker/mysql/initdb:/docker-entrypoint-initdb.d
+
+volumes:
+  mysql_data:

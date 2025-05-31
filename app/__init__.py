@@ -1,24 +1,39 @@
 
-from flask import Flask, jsonify, request
+from flask import Flask, request
 from .config import Config
 from .models import petplanner
 from .models.petplanner import db
+from sqlalchemy.exc import OperationalError
+import time
+
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
     db.init_app(app)
-    print(f"{app.config}")
+
+    with app.app_context():
+        for i in range(10):
+            time.sleep(20)
+            try:
+                db.create_all()
+                break
+            except OperationalError:
+                print("Base de datos no lista, reintentando...")
+        else:
+            raise RuntimeError("No se pudo conectar a la base de datos")
 
     from app.routes.user_route import users
     from app.routes.allergy_route import allergy
     from app.routes.pet_route import pets
     from app.routes.medical_event_route import medical_event
     from app.routes.notification_route import notification
+    from app.routes.center_route import center
     app.register_blueprint(users, url_prefix="/users")
-    app.register_blueprint(allergy, url_prefix="/allergy")
+    app.register_blueprint(allergy, url_prefix="/allergies")
     app.register_blueprint(pets, url_prefix="/pets")
-    app.register_blueprint(medical_event, url_prefix="/medical_event")
-    app.register_blueprint(notification, url_prefix="/notification")
+    app.register_blueprint(medical_event, url_prefix="/medical_events")
+    app.register_blueprint(notification, url_prefix="/notifications")
+    app.register_blueprint(center, url_prefix="/centers")
 
     @app.route("/")
     def index():
