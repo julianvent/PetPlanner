@@ -2,7 +2,13 @@ pipeline {
     agent any
 
     environment {
-        DB_PASSWORD = credentials('DB_PASSWORD')
+        DB_PASSWORD    = credentials('DB_PASSWORD')
+        DB_USER        = credentials('DB_USER')
+        DB_HOST        = credentials('DB_HOST')
+        DB_NAME        = credentials('DB_NAME')
+        SECRET_KEY     = credentials('SECRET_KEY')
+        EMAIL_USER     = credentials('EMAIL_USER')
+        EMAIL_PASSWORD = credentials('EMAIL_PASSWORD')
     }
 
     stages {
@@ -23,7 +29,6 @@ pipeline {
 
         stage('Wait for Services') {
             steps {
-                // espera a que la base de datos y la app estén listas
                 sh 'sleep 15'
             }
         }
@@ -35,3 +40,4 @@ pipeline {
         }
     }
 }
+    
