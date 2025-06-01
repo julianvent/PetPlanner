@@ -23,6 +23,7 @@ pipeline {
                 sh 'echo "Running on agent: $(hostname)"'
                 sh 'pwd'
                 sh 'ls -la'
+                sh 'echo $DB_PASSWORD'
             }
         }
 
