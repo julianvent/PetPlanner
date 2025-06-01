@@ -19,6 +19,7 @@ pipeline {
         }
 
         stage('Build and Run Containers') {
+            
             steps {
                 script {
                     sh 'docker-compose down -v'
