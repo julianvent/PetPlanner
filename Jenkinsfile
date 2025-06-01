@@ -18,8 +18,15 @@ pipeline {
             }
         }
 
+        stage('Debug Agent') {
+            steps {
+                sh 'echo "Running on agent: $(hostname)"'
+                sh 'pwd'
+                sh 'ls -la'
+            }
+        }
+
         stage('Build and Run Containers') {
-            
             steps {
                 script {
                     sh 'docker-compose down -v'
@@ -41,4 +48,4 @@ pipeline {
         }
     }
 }
-    
+
