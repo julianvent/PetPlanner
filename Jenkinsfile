@@ -30,8 +30,8 @@ pipeline {
         stage('Build and Run Containers') {
             steps {
                 script {
-                    sh 'docker-compose down -v'
-                    sh 'docker-compose up -d --build'
+                    sh 'docker compose down -v'
+                    sh 'docker compose up -d --build'
                 }
             }
         }
